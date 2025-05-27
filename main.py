@@ -1,7 +1,8 @@
 import getpass
 import os
-from langchain_core.messages import HumanMessage, SystemMessage, ChatPromptTemplate
+from langchain_core.messages import HumanMessage, SystemMessage
 
+from langchain_core.prompts import ChatPromptTemplate
 
 if not os.environ.get("OPENAI_API_KEY"):
   os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
@@ -18,3 +19,9 @@ system_template = "Translate the following from English into {language}"
 prompt_template = ChatPromptTemplate.from_messages(
     [("system", system_template), ("user", "{text}")]
 )
+prompt = prompt_template.invoke({"language": "Italian", "text": "hi!"})
+
+prompt.to_messages()
+
+response = model.invoke(prompt)
+print(response.content)

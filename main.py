@@ -12,6 +12,9 @@ from langgraph.graph import START, MessagesState, StateGraph
 # Define a new graph
 workflow = StateGraph(state_schema=MessagesState)
 
+def call_model(state: MessagesState):
+    response = model.invoke(state["messages"])
+    return {"messages": response}
 
 #Ask for API key
 if not os.environ.get("OPENAI_API_KEY"):

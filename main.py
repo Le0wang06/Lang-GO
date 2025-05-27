@@ -1,10 +1,14 @@
 import getpass
 import os
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 
 from langchain_core.prompts import ChatPromptTemplate
 
 from langchain.chat_models import init_chat_model
+
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import START, MessagesState, StateGraph
+
 
 #Ask for API key
 if not os.environ.get("OPENAI_API_KEY"):
@@ -13,18 +17,19 @@ if not os.environ.get("OPENAI_API_KEY"):
 #Initialize model
 model = init_chat_model("gpt-4o-mini", model_provider="openai")
 
-#Define prompt template
-system_template = "Translate the following from English into {language}"
 
-
-#Define prompt
-prompt_template = ChatPromptTemplate.from_messages(
-    [("system", system_template), ("user", "{text}")]
+model.invoke(
+    [
+        HumanMessage(content="Hi! I'm Bob"),
+        AIMessage(content="Hello Bob! How can I assist you today?"),
+        HumanMessage(content="What's my name?"),
+    ]
 )
 
-#Define prompt
-prompt = prompt_template.invoke({"language": "Italian", "text": "hi!"})
-
-#Print response
-response = model.invoke(prompt)
-print(response.content)
+print(model.invoke(
+    [
+        HumanMessage(content="Hi! I'm Bob"),
+        AIMessage(content="Hello Bob! How can I assist you today?"),
+        HumanMessage(content="What's my name?"),
+    ]
+))

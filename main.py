@@ -9,6 +9,9 @@ from langchain.chat_models import init_chat_model
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 
+# Define a new graph
+workflow = StateGraph(state_schema=MessagesState)
+
 
 #Ask for API key
 if not os.environ.get("OPENAI_API_KEY"):

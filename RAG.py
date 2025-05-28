@@ -40,5 +40,8 @@ system_prompt_fmt = system_prompt.format(context=docs_text)
 model = ChatOpenAI(model="gpt-4o", temperature=0) 
 
 # Generate a response
-questions = model.invoke([SystemMessage(content=system_prompt_fmt),
+response = model.invoke([SystemMessage(content=system_prompt_fmt),
                           HumanMessage(content=question)])
+
+# Print the response
+print("\nAnswer:", response.content)

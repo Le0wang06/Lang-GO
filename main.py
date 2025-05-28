@@ -1,6 +1,6 @@
 import getpass
 import os
-from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage , trim_messages
 
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 
@@ -33,18 +33,50 @@ prompt_template = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Define a new graph
-workflow = StateGraph(state_schema=MessagesState)
-
-def call_model(state: MessagesState):
-    prompt = prompt_template.invoke(state)
-    response = model.invoke(prompt)
-    return {"messages": response}
 
 
 class State(TypedDict):
     messages: Annotated[Sequence[BaseMessage], add_messages]
     language: str
+
+
+
+
+# Define a new graph
+workflow = StateGraph(state_schema=State)
+
+trimmer = trim_messages(
+    max_tokens=65,
+    strategy="last",
+    token_counter=model,
+    include_system=True,
+    allow_partial=False,
+    start_on="human",
+)
+
+messages = [
+    SystemMessage(content="you're a good assistant"),
+    HumanMessage(content="hi! I'm bob"),
+    AIMessage(content="hi!"),
+    HumanMessage(content="I like vanilla ice cream"),
+    AIMessage(content="nice"),
+    HumanMessage(content="whats 2 + 2"),
+    AIMessage(content="4"),
+    HumanMessage(content="thanks"),
+    AIMessage(content="no problem!"),
+    HumanMessage(content="having fun?"),
+    AIMessage(content="yes!"),
+]
+
+trimmer.invoke(messages)
+
+def call_model(state: State):
+    trimmed_messages = trimmer.invoke(state["messages"])
+    prompt = prompt_template.invoke(
+        {"messages": trimmed_messages, "language": state["language"]}
+    )
+    response = model.invoke(prompt)
+    return {"messages": [response]}
 
 
 
@@ -57,9 +89,13 @@ memory = MemorySaver()
 app = workflow.compile(checkpointer=memory)
 
 
-config = {"configurable": {"thread_id": "abc345"}}
-query = "Hi! I'm Jim."
+config = {"configurable": {"thread_id": "abc678"}}
+query = "What math problem did I ask?"
+language = "English"
 
-input_messages = [HumanMessage(query)]
-output = app.invoke({"messages": input_messages}, config)
+input_messages = messages + [HumanMessage(query)]
+output = app.invoke(
+    {"messages": input_messages, "language": language},
+    config,
+)
 output["messages"][-1].pretty_print()

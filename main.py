@@ -44,10 +44,8 @@ model.invoke(
 config = {"configurable": {"thread_id": "abc123"}}
 
 
-query = "Hi! I'm Bob."
+query = "What's my name?"
 
 input_messages = [HumanMessage(query)]
 output = app.invoke({"messages": input_messages}, config)
-output["messages"][-1].pretty_print()  # output contains all messages in state
-
-
+output["messages"][-1].pretty_print()

@@ -10,8 +10,10 @@ from langgraph.prebuilt import create_react_agent
 # Set up API keys
 if not os.environ.get("TAVILY_API_KEY"):
     os.environ["TAVILY_API_KEY"] = getpass.getpass("Enter your Tavily API key: ")
+
 if not os.environ.get("ANTHROPIC_API_KEY"):
     os.environ["ANTHROPIC_API_KEY"] = getpass.getpass("Enter your Anthropic API key: ")
+
 
 # Create the agent
 memory = MemorySaver()

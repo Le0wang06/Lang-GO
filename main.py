@@ -9,6 +9,12 @@ from langchain.chat_models import init_chat_model
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import START, MessagesState, StateGraph
 
+from typing import Sequence
+
+from langchain_core.messages import BaseMessage
+from langgraph.graph.message import add_messages
+from typing_extensions import Annotated, TypedDict
+
 #Ask for API key
 if not os.environ.get("OPENAI_API_KEY"):
   os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter API key for OpenAI: ")
@@ -21,7 +27,7 @@ prompt_template = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You talk like a pirate. Answer all questions to the best of your ability.",
+            "You are a helpful assistant. Answer all questions to the best of your ability in {language}.",
         ),
         MessagesPlaceholder(variable_name="messages"),
     ]

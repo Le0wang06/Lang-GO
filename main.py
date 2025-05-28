@@ -41,6 +41,13 @@ def call_model(state: MessagesState):
     response = model.invoke(prompt)
     return {"messages": response}
 
+
+class State(TypedDict):
+    messages: Annotated[Sequence[BaseMessage], add_messages]
+    language: str
+
+
+
 # Define the (single) node in the graph
 workflow.add_edge(START, "model")
 workflow.add_node("model", call_model)

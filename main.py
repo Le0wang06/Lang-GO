@@ -89,13 +89,15 @@ memory = MemorySaver()
 app = workflow.compile(checkpointer=memory)
 
 
-config = {"configurable": {"thread_id": "abc678"}}
-query = "What math problem did I ask?"
+config = {"configurable": {"thread_id": "abc789"}}
+query = "Hi I'm Todd, please tell me a joke."
 language = "English"
 
-input_messages = messages + [HumanMessage(query)]
-output = app.invoke(
+input_messages = [HumanMessage(query)]
+for chunk, metadata in app.stream(
     {"messages": input_messages, "language": language},
     config,
-)
-output["messages"][-1].pretty_print()
+    stream_mode="messages",
+):
+    if isinstance(chunk, AIMessage):  # Filter to just model responses
+        print(chunk.content, end="|")

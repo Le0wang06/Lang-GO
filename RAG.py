@@ -1,7 +1,13 @@
+import getpass
+import os
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
+
+# Set up API key
+if not os.environ.get("OPENAI_API_KEY"):
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
 
 # Create embeddings and vector store
 embeddings = OpenAIEmbeddings()

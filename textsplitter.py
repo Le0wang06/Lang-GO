@@ -1,4 +1,4 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter, HTMLHeaderTextSplitter
 
 # Sample text with multiple paragraphs
 text = """

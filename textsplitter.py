@@ -1,4 +1,4 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter, HTMLHeaderTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter, HTMLHeaderTextSplitter, Language
 
 # Sample text with multiple paragraphs
 text = """
@@ -37,3 +37,18 @@ for i, chunk in enumerate(chunks, 1):
     print(chunk)
     print("-" * 50)
     print()
+
+
+# code = """
+# def func1():
+#     pass
+
+# def func2():
+#     pass
+# """
+# splitter = RecursiveCharacterTextSplitter.from_language(
+#     language=Language.PYTHON,
+#     chunk_size=200,
+#     chunk_overlap=10
+# )
+# chunks = splitter.split_text(code)

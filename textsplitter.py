@@ -20,8 +20,8 @@ print("\nSplitting text into chunks...\n")
 
 # Initialize the splitter with smaller chunks for demonstration
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=100,  # Smaller chunks to better see the splitting
-    chunk_overlap=50,  # Overlap to maintain context
+    chunk_size=100,  # Smaller chunks to better see the splitting "how long each chunk should be"
+    chunk_overlap=50,  # how many characters (or tokens) overlap between chunks (helps preserve context)
     length_function=len,
     separators=["\n\n", "\n", " ", ""]  # Split by paragraphs, then lines, then words
 )

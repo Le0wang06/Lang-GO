@@ -1,5 +1,6 @@
 from langchain_experimental.text_splitter import SemanticChunker
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
+
 from langchain_core.documents import Document
 
 # ⚠️ Make sure your OpenAI API key is set
@@ -9,10 +10,11 @@ os.environ["OPENAI_API_KEY"] = "your-openai-api-key"
 # Step 1: Define your input text
 text = """LangChain is an open-source framework for building applications powered by large language models. 
 It provides tools to connect language models to external data sources, interact with environments, 
-and build advanced reasoning applications. LangChain supports multiple backends including OpenAI, HuggingFace, and more."""
+and build advanced reasoning applications.LangChain supports multiple backends including OpenAI, HuggingFace, and more. The food that langchain likes is bananas and oranges. These food are good for health. Health are important for langchain."""
 
 # Step 2: Initialize the embedding model
 embedding_model = OpenAIEmbeddings()
+
 
 # Step 3: Use SemanticChunker to split the document
 splitter = SemanticChunker(embedding_model)
